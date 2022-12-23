@@ -4,7 +4,13 @@
  */
 package pkg3jl_multi_banking_system;
 
+import BankingClasses.UserDATA;
+import BankingClasses.Users;
+import BankingClasses.myConnection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,9 +18,9 @@ import javax.swing.JFrame;
  */
 public class Login extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login
-     */
+    myConnection conn;
+    PreparedStatement st;
+    ResultSet rs;
     public Login() {
         initComponents();
 //        setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -31,8 +37,8 @@ public class Login extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        acclog = new javax.swing.JTextField();
+        pinlog = new javax.swing.JPasswordField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -54,23 +60,23 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Minimal Professional Economics Bank Logo 1.png"))); // NOI18N
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, -1, -1));
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Accoun No.", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        acclog.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        acclog.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Accoun No.", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+        acclog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                acclogActionPerformed(evt);
             }
         });
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 210, 540, 70));
+        jPanel2.add(acclog, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 210, 540, 70));
 
-        jPasswordField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jPasswordField1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PIN", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
+        pinlog.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        pinlog.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PIN", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+        pinlog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
+                pinlogActionPerformed(evt);
             }
         });
-        jPanel2.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, 540, 70));
+        jPanel2.add(pinlog, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, 540, 70));
 
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -123,24 +129,45 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void acclogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acclogActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_acclogActionPerformed
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+    private void pinlogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pinlogActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
+    }//GEN-LAST:event_pinlogActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        AccountDetails ad = new AccountDetails();
-        ad.setVisible(true);
-        this.dispose();
+        int accc = Integer.parseInt(acclog.getText());
+        int pin = Integer.parseInt(String.valueOf(pinlog.getPassword()));
+        
+        Users user = null;
+        user = UserDATA.login(accc, pin);
+        
+        if (user == null) {
+            JOptionPane.showMessageDialog(null, "Incorrect Accoun Number / Pin", "Login Error", 2);
+        }else{
+            if (user.equals(pin)){
+                JOptionPane.showMessageDialog(null, "Incorrect Accoun Number / Pin", "Login Error", 2);
+            } else {
+                AccountDetails ad = new AccountDetails();
+                ad.setVisible(true);
+                this.dispose();
+            }
+                
+                
+            
+            
+        }
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         New_Account ad = new New_Account();
         ad.setVisible(true);
         this.dispose();
+        
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -179,6 +206,7 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JTextField acclog;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -187,7 +215,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    public static javax.swing.JPasswordField pinlog;
     // End of variables declaration//GEN-END:variables
 }
